@@ -6,6 +6,7 @@ from django.db import models
 class login(models.Model):
     lib_id = models.CharField(max_length=10)
     password = models.CharField(max_length=16, default='student')
+    name = models.CharField(max_length=20, default="teacher")
 
 
 class student(models.Model):

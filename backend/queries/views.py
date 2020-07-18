@@ -41,10 +41,12 @@ def accept_query(request):
         # send me id of the query
         ID = data['id']
         queries.objects.filter(id=ID).update(status="accepted")
-    return JsonResponse('Query accepted', safe=False)
-
-
-def show_accepted_queries(request):
-    if request.method =='GET':
-        response = list(queries.objects.filter(status="accepted").values())
+        response = list(queries.objects.filter(id=ID).values("id", "date", "query", "key__name", 'key__father_name',
+                                                             'key__lib_id', 'key__course', 'key__mobile_no', 'key__branch', 'key__sec', 'key__email'))
     return JsonResponse(response, safe=False)
+
+
+# def show_accepted_queries(request):
+#     if request.method =='GET':
+#         response = list(queries.objects.filter(status="accepted").values())
+#     return JsonResponse(response, safe=False)
