@@ -14,7 +14,8 @@ def new_query(request):
         query = data['query']
         queries.objects.create(
             query=query, key=student.objects.get(lib_id=lib_id))
-    return JsonResponse('Query initiated', safe=False)
+        response = 'Query initiated'
+    return JsonResponse(response, safe=False)
 
 
 def show_active_queries(request):
@@ -46,7 +47,27 @@ def accept_query(request):
     return JsonResponse(response, safe=False)
 
 
-# def show_accepted_queries(request):
-#     if request.method =='GET':
-#         response = list(queries.objects.filter(status="accepted").values())
-#     return JsonResponse(response, safe=False)
+def show_status(request):
+    pass
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        print(data)
+        lib_id = data['lib_id']
+        bool_check = queries.objects.filter(key__lib_id=lib_id).exists()
+        if bool_check:
+            response = list(queries.objects.filter(key__lib_id=lib_id).values())
+        else:
+            response = "no submitted queries"
+
+    return JsonResponse(response, safe=False)
+
+
+
+
+
+
+
+    # def show_accepted_queries(request):
+    #     if request.method =='GET':
+    #         response = list(queries.objects.filter(status="accepted").values())
+    #     return JsonResponse(response, safe=False)
