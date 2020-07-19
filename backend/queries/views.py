@@ -48,24 +48,18 @@ def accept_query(request):
 
 
 def show_status(request):
-    pass
     if request.method == 'POST':
         data = json.loads(request.body)
         print(data)
         lib_id = data['lib_id']
         bool_check = queries.objects.filter(key__lib_id=lib_id).exists()
         if bool_check:
-            response = list(queries.objects.filter(key__lib_id=lib_id).values())
+            response = list(queries.objects.filter(
+                key__lib_id=lib_id).values())
         else:
             response = "no submitted queries"
 
     return JsonResponse(response, safe=False)
-
-
-
-
-
-
 
     # def show_accepted_queries(request):
     #     if request.method =='GET':

@@ -91,15 +91,22 @@ def delete(request):
 def update(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        lib_id = data['lib_id']
-        name = data['name']
-        father_name = data['father_name']
-        course = data['course']
-        mobile_no = data['mobile_no']
-        branch = data['branch']
-        sec = data['sec']
-        email = data['email']
-        student.objects.filter(lib_id=lib_id).update(name=name, father_name=father_name,
-                                                     course=course, mobile_no=mobile_no, branch=branch, sec=sec, email=email)
-        queries.objects.filter(key__lib_id=lib_id).update(status="finished")
-        return JsonResponse('Details Updated', safe=False)
+        print(data)
+        id = data['id']
+        lib = data['lib_id']
+        name = data['key__name']
+        father_name = data['key__father_name']
+        course = data['key__course']
+        mobile_no = data['key__mobile_no']
+        branch = data['key__branch']
+        sec = data['key__sec']
+        email = data['key__email']
+        bool_data = queries.objects.filter(id=id).exists()
+        if bool_data:
+            student.objects.filter(lib_id=lib).update(name=name, father_name=father_name,
+                                                         course=course, mobile_no=mobile_no, branch=branch, sec=sec, email=email)
+            queries.objects.filter(id=id).update(status="finished")
+            response = 'Details Updated'
+        else:
+            response = "enter valid id"
+    return JsonResponse(response, safe=False)
